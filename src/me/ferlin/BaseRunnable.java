@@ -9,6 +9,6 @@ public abstract class BaseRunnable implements Runnable {
     }
 
     public DatiCondivisi datiCondivisi() {
-        return datiCondivisi;
+        return datiCondivisi; 
     }
 }
