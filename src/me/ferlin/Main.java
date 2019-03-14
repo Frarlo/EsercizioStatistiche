@@ -24,19 +24,26 @@ public class Main {
         Thread genTh = new Thread(new GeneratoreRunnable(datiCondivisi), "ThreadGeneratore");
         Thread puntiTh = new Thread(new LettoreRunnable(datiCondivisi, '.'), "ThreadContaPunti");
         Thread spaziTh = new Thread(new LettoreRunnable(datiCondivisi, ' '), "ThreadContaSpazi");
+        Thread visualizzaTh = new Thread(new VisualizzaRunnable(datiCondivisi), "ThreadVisualizza");
 
         genTh.start();
         puntiTh.start();
         spaziTh.start();
+        visualizzaTh.start();
 
         datiCondivisi.getTerminationSemaphore().acquireUninterruptibly(3);
+        visualizzaTh.interrupt();
 
         System.out.println("NumSpaziInseriti: " + datiCondivisi.getNumSpaziInseriti());
         System.out.println("NumPuntiInseriti: " + datiCondivisi.getNumPuntiInseriti());
         System.out.println("NumSpaziLetti: " + datiCondivisi.getNumSpaziLetti());
         System.out.println("NumPuntiLetti: " + datiCondivisi.getNumPuntiLetti());
 
-        System.out.println("Done.");
+        if(datiCondivisi.getNumSpaziInseriti() == datiCondivisi.getNumSpaziLetti() &&
+                datiCondivisi.getNumPuntiInseriti() == datiCondivisi.getNumPuntiLetti())
+            System.out.println("I dati corrispondono");
+        else
+            System.err.println("I dati non corrispondono");
 
         System.out.println("Done.");
     }

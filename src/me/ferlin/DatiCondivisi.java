@@ -10,6 +10,8 @@ public class DatiCondivisi {
     private int daGenerare;
     private int daLeggere;
 
+    private final Schermo schermo;
+
     private final Semaphore bufferMutex;
     private final Semaphore pienoPuntiSemaphore;
     private final Semaphore pienoSpaziSemaphore;
@@ -25,6 +27,8 @@ public class DatiCondivisi {
     public DatiCondivisi(int daGenerare) {
         buffer = new char[BUFFER_SIZE];
         this.daGenerare = daGenerare;
+
+        schermo = new Schermo();
 
         bufferMutex = new Semaphore(1);
         pienoPuntiSemaphore = new Semaphore(0);
@@ -104,5 +108,9 @@ public class DatiCondivisi {
 
     public Semaphore getTerminationSemaphore() {
         return terminationSemaphore;
+    }
+
+    public Schermo getSchermo() {
+        return schermo;
     }
 }

@@ -32,8 +32,10 @@ public class GeneratoreRunnable extends BaseRunnable {
                     datiCondivisi().getBufferMutex().release();
 
                     if(generated == ' ') {
+                        datiCondivisi().getSchermo().println("Generata lettera '" + generated + "'");
                         datiCondivisi().incNumSpaziInseriti();
                     } else if(generated == '.') {
+                        datiCondivisi().getSchermo().println("Generata lettera '" + generated + "'");
                         datiCondivisi().incNumPuntiInseriti();
                     }
 

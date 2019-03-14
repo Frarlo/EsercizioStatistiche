@@ -32,9 +32,11 @@ public class LettoreRunnable extends BaseRunnable {
                     if (c == daContare)
                         switch (daContare) {
                             case '.':
+                                datiCondivisi().getSchermo().println("Letta lettera '" + c + "'");
                                 datiCondivisi().incNumPuntiLetti();
                                 break;
                             case ' ':
+                                datiCondivisi().getSchermo().println("Letta lettera '" + c + "'");
                                 datiCondivisi().incNumSpaziLetti();
                         }
                 }
