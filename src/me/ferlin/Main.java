@@ -21,30 +21,22 @@ public class Main {
 
         DatiCondivisi datiCondivisi = new DatiCondivisi(daGenerare);
 
-        Thread genTh = new Thread(new GeneratoreRunnable(datiCondivisi));
-        Thread puntiTh = new Thread(new LettoreRunnable(datiCondivisi, '.'));
-        Thread spaziTh = new Thread(new LettoreRunnable(datiCondivisi, ' '));
+        Thread genTh = new Thread(new GeneratoreRunnable(datiCondivisi), "ThreadGeneratore");
+        Thread puntiTh = new Thread(new LettoreRunnable(datiCondivisi, '.'), "ThreadContaPunti");
+        Thread spaziTh = new Thread(new LettoreRunnable(datiCondivisi, ' '), "ThreadContaSpazi");
 
         genTh.start();
         puntiTh.start();
         spaziTh.start();
 
-        try {
-            genTh.join();
-            puntiTh.join();
-            spaziTh.join();
+        datiCondivisi.getTerminationSemaphore().acquireUninterruptibly(3);
 
-            System.out.println("NumSpaziInseriti: " + datiCondivisi.getNumSpaziInseriti());
-            System.out.println("NumPuntiInseriti: " + datiCondivisi.getNumPuntiInseriti());
-            System.out.println("NumSpaziLetti: " + datiCondivisi.getNumSpaziLetti());
-            System.out.println("NumPuntiLetti: " + datiCondivisi.getNumPuntiLetti());
+        System.out.println("NumSpaziInseriti: " + datiCondivisi.getNumSpaziInseriti());
+        System.out.println("NumPuntiInseriti: " + datiCondivisi.getNumPuntiInseriti());
+        System.out.println("NumSpaziLetti: " + datiCondivisi.getNumSpaziLetti());
+        System.out.println("NumPuntiLetti: " + datiCondivisi.getNumPuntiLetti());
 
-            System.out.println("Done.");
-
-        } catch (InterruptedException ex) {
-            System.err.println("Main thread got interrupted");
-            ex.printStackTrace();
-        }
+        System.out.println("Done.");
 
         System.out.println("Done.");
     }

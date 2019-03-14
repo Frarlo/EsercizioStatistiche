@@ -11,8 +11,11 @@ public class DatiCondivisi {
     private int daLeggere;
 
     private final Semaphore bufferMutex;
-    private final Semaphore pienoSemaphore;
+    private final Semaphore pienoPuntiSemaphore;
+    private final Semaphore pienoSpaziSemaphore;
     private final Semaphore vuotoSemaphore;
+
+    private final Semaphore terminationSemaphore;
 
     private int numSpaziInseriti;
     private int numPuntiInseriti;
@@ -24,8 +27,11 @@ public class DatiCondivisi {
         this.daGenerare = daGenerare;
 
         bufferMutex = new Semaphore(1);
-        pienoSemaphore = new Semaphore(2);
-        vuotoSemaphore = new Semaphore(0);
+        pienoPuntiSemaphore = new Semaphore(0);
+        pienoSpaziSemaphore = new Semaphore(0);
+        vuotoSemaphore = new Semaphore(2);
+
+        terminationSemaphore = new Semaphore(0);
     }
 
     public char[] getBuffer() {
@@ -84,11 +90,19 @@ public class DatiCondivisi {
         return bufferMutex;
     }
 
-    public Semaphore getPieniSemaphore() {
-        return pienoSemaphore;
+    public Semaphore getPienoSpaziSemaphore() {
+        return pienoSpaziSemaphore;
+    }
+
+    public Semaphore getPienoPuntiSemaphore() {
+        return pienoPuntiSemaphore;
     }
 
     public Semaphore getVuotoSemaphore() {
         return vuotoSemaphore;
+    }
+
+    public Semaphore getTerminationSemaphore() {
+        return terminationSemaphore;
     }
 }

@@ -4,7 +4,7 @@ public class LettoreRunnable extends BaseRunnable {
 
     private final char daContare;
 
-    protected LettoreRunnable(DatiCondivisi datiCondivisi,
+    public LettoreRunnable(DatiCondivisi datiCondivisi,
                               char daContare) {
         super(datiCondivisi);
         this.daContare = daContare;
@@ -13,13 +13,23 @@ public class LettoreRunnable extends BaseRunnable {
     @Override
     public void run() {
         try {
-
             while(datiCondivisi().getDaGenerare() > 0) {
-                datiCondivisi().getPieniSemaphore().acquire();
-                datiCondivisi().getBufferMutex().acquire();
 
-                for(char c : datiCondivisi().getBuffer())
-                    if(c == daContare) {
+                switch (daContare) {
+                    case '.':
+                        datiCondivisi().getPienoPuntiSemaphore().acquire();
+                        break;
+                    case ' ':
+                        datiCondivisi().getPienoSpaziSemaphore().acquire();
+                }
+
+                for(int i = 0; i < datiCondivisi().getDaLeggere(); i++) {
+
+                    datiCondivisi().getBufferMutex().acquire();
+                    char c = datiCondivisi().getBuffer()[i];
+                    datiCondivisi().getBufferMutex().release();
+
+                    if (c == daContare)
                         switch (daContare) {
                             case '.':
                                 datiCondivisi().incNumPuntiLetti();
@@ -27,14 +37,14 @@ public class LettoreRunnable extends BaseRunnable {
                             case ' ':
                                 datiCondivisi().incNumSpaziLetti();
                         }
-                    }
+                }
 
-                datiCondivisi().getBufferMutex().release();
                 datiCondivisi().getVuotoSemaphore().release();
             }
-
         } catch (InterruptedException ex) {
             // Il thread è stato interrotto dal main
         }
+
+        datiCondivisi().getTerminationSemaphore().release();
     }
 }

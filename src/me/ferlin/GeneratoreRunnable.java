@@ -7,7 +7,7 @@ public class GeneratoreRunnable extends BaseRunnable {
 
     private static final String DICTIONARY = "ABCDEFGHIJKLMNOPQRS. ";
 
-    protected GeneratoreRunnable(DatiCondivisi datiCondivisi) {
+    public GeneratoreRunnable(DatiCondivisi datiCondivisi) {
         super(datiCondivisi);
     }
 
@@ -18,7 +18,6 @@ public class GeneratoreRunnable extends BaseRunnable {
         try {
             while(datiCondivisi().getDaGenerare() > 0) {
                 datiCondivisi().getVuotoSemaphore().acquire(2);
-                datiCondivisi().getBufferMutex().acquire();
 
                 int i;
                 for(i = 0; i < datiCondivisi().getBuffer().length; i++) {
@@ -27,7 +26,10 @@ public class GeneratoreRunnable extends BaseRunnable {
                         break;
 
                     char generated = DICTIONARY.charAt(rn.nextInt(DICTIONARY.length()));
+
+                    datiCondivisi().getBufferMutex().acquire();
                     datiCondivisi().getBuffer()[i] = generated;
+                    datiCondivisi().getBufferMutex().release();
 
                     if(generated == ' ') {
                         datiCondivisi().incNumSpaziInseriti();
@@ -39,12 +41,14 @@ public class GeneratoreRunnable extends BaseRunnable {
                 }
                 datiCondivisi().setDaLeggere(i);
 
-                datiCondivisi().getBufferMutex().release();
-                datiCondivisi().getPieniSemaphore().release(2);
+                datiCondivisi().getPienoPuntiSemaphore().release();
+                datiCondivisi().getPienoSpaziSemaphore().release();
             }
 
         } catch (InterruptedException ex) {
             // Il thread è stato interrotto dal main
         }
+
+        datiCondivisi().getTerminationSemaphore().release();
     }
 }
