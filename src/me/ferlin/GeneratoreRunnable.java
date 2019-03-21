@@ -52,5 +52,6 @@ public class GeneratoreRunnable extends BaseRunnable {
         }
 
         datiCondivisi().getTerminationSemaphore().release();
+        System.out.println("GENERAZIONE TERMINATA");
     }
 }

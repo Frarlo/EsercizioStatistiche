@@ -48,5 +48,6 @@ public class LettoreRunnable extends BaseRunnable {
         }
 
         datiCondivisi().getTerminationSemaphore().release();
+        System.out.println("LETTURA '" + daContare + "' TERMINATA");
     }
 }

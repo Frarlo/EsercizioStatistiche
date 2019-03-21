@@ -11,10 +11,11 @@ public class VisualizzaRunnable extends BaseRunnable {
     @Override
     public void run() {
         try {
-            while(true)
+            while(!Thread.currentThread().isInterrupted())
                 datiCondivisi().getSchermo().printMessages();
         } catch (InterruptedException ex) {
             // Interrotto dal main
         }
+        System.out.println("VISUALIZZAZIONE TERMINATA");
     }
 }

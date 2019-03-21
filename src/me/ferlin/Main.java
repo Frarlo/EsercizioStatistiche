@@ -12,7 +12,7 @@ public class Main {
      * Entry point
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         final Scanner sc = new Scanner(System.in);
 
@@ -33,6 +33,7 @@ public class Main {
 
         datiCondivisi.getTerminationSemaphore().acquireUninterruptibly(3);
         visualizzaTh.interrupt();
+        visualizzaTh.join();
 
         System.out.println("NumSpaziInseriti: " + datiCondivisi.getNumSpaziInseriti());
         System.out.println("NumPuntiInseriti: " + datiCondivisi.getNumPuntiInseriti());
